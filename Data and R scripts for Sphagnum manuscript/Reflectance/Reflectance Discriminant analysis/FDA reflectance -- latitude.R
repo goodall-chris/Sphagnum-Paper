@@ -1,13 +1,13 @@
 #FDA for reflectance -- latitude
 #Flexible Discriminant Analysis update -- 9.29.21
 #cleaned 01/27/21
+#cleaned again 08-31-2023
 
 #packages 
 library(progress)
 library(dplyr)
 library(caret)
 library(mda)
-library(klaR)
 library(sda)
 library(viridis)
 library(ggplot2)
@@ -135,6 +135,6 @@ figa <- ggplot(plot.data_1, aes(V1, V2)) +
   )
 figa
 
-tiff("FDA reflectance by latitude 04-22-2023.tiff", units="in", width=10, height=9, res=300)
-figa
-dev.off()
+# tiff("FDA reflectance by latitude.tiff", units="in", width=10, height=9, res=150)
+# figa
+# dev.off()

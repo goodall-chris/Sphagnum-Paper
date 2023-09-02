@@ -11,7 +11,6 @@ library(multcomp) #for analysis
 library(viridis) #for plotting
 library(ggplot2)
 library(dplyr)
-library(agricolae)
 library(stringr)
 library(rstatix)
 library(ggpubr)
@@ -225,10 +224,10 @@ layout <- '
 ABCD
 EFGX'
 
-tiff("chl flu latitude 06-03-2023.tiff", units="in", width=20, height=11.5, res=300)
-wrap_plots(A = fvfm, B = qP, C = qL, D = NPQ, E = phiPSII,
-           `F` = phiNPQ, G = phiNO, X = legend, design=layout) + 
-           plot_annotation(tag_levels = 'A')
-dev.off()
+# tiff("chl flu latitude.tiff", units="in", width=20, height=11.5, res=300)
+# wrap_plots(A = fvfm, B = qP, C = qL, D = NPQ, E = phiPSII,
+#            `F` = phiNPQ, G = phiNO, X = legend, design=layout) + 
+#            plot_annotation(tag_levels = 'A')
+# dev.off()
 
 ##

@@ -21,7 +21,7 @@ library(readr)
 library(plyr)
 
 #import data
-d1 <- read_csv("data/moss chl flu index by lat 04-14-2023.csv")
+d1 <- read_csv("data/chlorophyll fluorescence by latitude.csv")
 
 #clean data
 d1$lat <- round(d1$lat, 0) #round by lat

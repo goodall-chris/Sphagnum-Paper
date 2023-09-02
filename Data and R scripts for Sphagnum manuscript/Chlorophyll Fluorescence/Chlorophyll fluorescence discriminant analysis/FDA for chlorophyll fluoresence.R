@@ -12,7 +12,6 @@ library(dplyr)
 library(plyr)
 library(caret)
 library(mda)
-library(klaR)
 library(sda)
 library(viridis)
 library(ggplot2)
@@ -21,7 +20,7 @@ library(ggpubr)
 library(readr)
 
 #data 
-d1 <- read_csv("data/chl.flu index -- species 04-14-2023.csv")
+d1 <- read_csv("data/chlorophyll fluorescence by taxa.csv")
 
 #round Species, make it a factor, and remove sd columns
 d1 <- d1[, c("Species", "PPFD", "FvFm_mean", "qP", "qL", "NPQ", "phiPSII", "phiNPQ", "phiNO_new")]
@@ -142,6 +141,6 @@ figa <- ggplot(plot.data_1, aes(V1, V2)) +
   )
 figa
 
-tiff("FDA chl.flu -- taxa -- all ppfd -- 04-23-2023.tiff", units="in", width=10, height=9, res=300)
-figa
-dev.off()
+# tiff("Chlorophyll Fluorescence by Taxa FDA.tiff", units="in", width=10, height=9, res=150)
+# figa
+# dev.off()

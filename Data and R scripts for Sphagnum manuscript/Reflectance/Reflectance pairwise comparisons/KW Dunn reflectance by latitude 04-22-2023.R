@@ -18,7 +18,7 @@ library(reshape)
 library(readr)
 
 #import data
-d1 <- read.csv("data/reflectance by latitude 08-31-2023.csv") #import data
+d1 <- read.csv("data/reflectance by latitude.csv") #import data
 
 #round by latitude
 d1$Latitude <- round(d1$Latitude, 0)

@@ -10,7 +10,6 @@ library(multcomp) #for analysis
 library(viridis) #for plotting
 library(ggplot2)
 library(dplyr)
-library(agricolae)
 library(stringr)
 library(rstatix)
 library(ggpubr)
@@ -21,7 +20,7 @@ library(mosaic)
 library(readr)
 
 #import data
-d1 <- read.csv("reflectance by taxa 04-22-2023.csv")
+d1 <- read.csv("data/reflectance by taxa 04-22-2023.csv")
 
 #Clean up data to exclude physiologically impossible values
 d1 <- d1[abs(d1$PRI) <= 1 &
@@ -346,7 +345,7 @@ defg
 defg
 defg
 '
-
-tiff("reflectance data by taxa -- 04-22-2023.tiff", units="in", width=20, height=11.5, res=300)
-wrap_plots(a=NDVI,b=PRI,c=ExGm, d=GRVI, e=ARI, f=RGR, g=legend, design=layout) + plot_annotation(tag_levels = "A")
-dev.off()
+#  
+# tiff("reflectance data by taxa.tiff", units="in", width=20, height=11.5, res=300)
+# wrap_plots(a=NDVI,b=PRI,c=ARI, d=ExGm, e=GRVI, f=RGR, g=legend, design=layout) + plot_annotation(tag_levels = "A")
+# dev.off()

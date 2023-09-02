@@ -9,7 +9,6 @@ library(multcomp) #for analysis
 library(viridis) #for plotting
 library(ggplot2)
 library(dplyr)
-library(agricolae)
 library(stringr)
 library(rstatix)
 library(ggpubr)
@@ -19,25 +18,13 @@ library(reshape)
 library(readr)
 
 #import data
-d1 <- read.csv("reflectance by latitude 04-22-2023.csv")
+d1 <- read.csv("data/reflectance by latitude 08-31-2023.csv") #import data
 
-#clean data
-d1$lat <- round(d1$lat, 0) #round by lat
-d1<- d1[, -which(names(d1) %in% c("X"))] #eliminate nonsense column
-
-#Clean up data
-d1 <- d1[abs(d1$PRI) <= 1 &
-           d1$ARI > -20 &
-           d1$RGR > 0, ]
-
-colnames(d1)[2] <- "Latitude" #longer name, but makes graphics look better
-
-#remove sd columns
-d1 <- d1[, -grep("_sd", colnames(d1))] 
-
+#round by latitude
+d1$Latitude <- round(d1$Latitude, 0)
 
 #run nonparametric test: NDVI
-(res.kruskal <- d1 %>% kruskal_test(NDVI ~ Latitude)) #this will indicate if there are siginficant differences between groups
+(res.kruskal <- d1 %>% kruskal_test(NDVI ~ Latitude)) #this will indicate if there are significant differences between groups
 d1 %>% kruskal_effsize(NDVI ~ Latitude) #this indicates the amount of variance between groups explained by the treatment. 
 #The interpretation values commonly in published literature are: 0.01- < 0.06 (small effect), 0.06 - < 0.14 (moderate effect) and >= 0.14 (large effect).
 #value of .579 is very large it suggests that latitudinal sites vary by NDVI 
@@ -51,6 +38,7 @@ holder <- pwc$p #extracts p.values from dunn_test
 names(holder)  <-  paste(pwc$group1, pwc$group2, sep="-")
 hold <-multcompLetters(holder) #this generates the letters 
 letters.NDVI <- reshape::melt(hold$Letters) #this pulls the letters from the list into a vector
+letters.NDVI
 
 #create data frame for putting on letters
 value_max_NDVI = d1 %>%
@@ -66,6 +54,7 @@ text_NDVI=text_NDVI[,c(1,3,2)] #rearrange columns
 d1$lat <- as.factor(d1$Latitude)
 text_NDVI$lat <- as.factor(text_NDVI$Latitude) 
 
+str(text_NDVI)
 #color palette
 pal.2 <- viridis(9, direction = 1) #create palette
 
@@ -89,7 +78,7 @@ NDVI <- ggplot(d1, aes(x = Latitude, y = NDVI,
 NDVI
 
 #run nonparametric test: PRI
-(res.kruskal <- d1 %>% kruskal_test(PRI ~ Latitude)) #this will indicate if there are siginficant differences between groups
+(res.kruskal <- d1 %>% kruskal_test(PRI ~ Latitude)) #this will indicate if there are significant differences between groups
 d1 %>% kruskal_effsize(PRI ~ Latitude) #this indicates the amount of variance between groups explained by the treatment. 
 #The interpretation values commonly in published literature are: 0.01- < 0.06 (small effect), 0.06 - < 0.14 (moderate effect) and >= 0.14 (large effect).
 #value of .194 is large it suggests that latitudinal sites vary by PRI 
@@ -148,7 +137,7 @@ PRI
 
 #run nonparametric test: ExGm
 # --by individual--
-(res.kruskal <- d1 %>% kruskal_test(ExGm ~ Latitude)) #this will indicate if there are siginficant differences between groups
+(res.kruskal <- d1 %>% kruskal_test(ExGm ~ Latitude)) #this will indicate if there are significant differences between groups
 d1 %>% kruskal_effsize(ExGm ~ Latitude) #this indicates the amount of variance between groups explained by the treatment. 
 #The interpretation values commonly in published literature are: 0.01- < 0.06 (small effect), 0.06 - < 0.14 (moderate effect) and >= 0.14 (large effect).
 #value of .396 is very large it suggests that latitudinal sites vary by ExGm 
@@ -208,7 +197,7 @@ ExGm
 
 #run nonparametric test: GRVI
 # --by individual--
-(res.kruskal <- d1 %>% kruskal_test(GRVI ~ Latitude)) #this will indicate if there are siginficant differences between groups
+(res.kruskal <- d1 %>% kruskal_test(GRVI ~ Latitude)) #this will indicate if there are significant differences between groups
 d1 %>% kruskal_effsize(GRVI ~ Latitude) #this indicates the amount of variance between groups explained by the treatment. 
 #The interpretation values commonly in published literature are: 0.01- < 0.06 (small effect), 0.06 - < 0.14 (moderate effect) and >= 0.14 (large effect).
 #value of .389 is very large it suggests that latitudinal sites vary by GRVI 
@@ -268,7 +257,7 @@ GRVI
 
 #run nonparametric test: ARI
 # --by individual--
-(res.kruskal <- d1 %>% kruskal_test(ARI ~ Latitude)) #this will indicate if there are siginficant differences between groups
+(res.kruskal <- d1 %>% kruskal_test(ARI ~ Latitude)) #this will indicate if there are significant differences between groups
 d1 %>% kruskal_effsize(ARI ~ Latitude) #this indicates the amount of variance between groups explained by the treatment. 
 #The interpretation values commonly in published literature are: 0.01- < 0.06 (small effect), 0.06 - < 0.14 (moderate effect) and >= 0.14 (large effect).
 #value of .454 is very large it suggests that latitudinal sites vary by ARI 
@@ -329,7 +318,7 @@ ARI
 
 #run nonparametric test: RGR
 # --by individual--
-(res.kruskal <- d1 %>% kruskal_test(RGR ~ Latitude)) #this will indicate if there are siginficant differences between groups
+(res.kruskal <- d1 %>% kruskal_test(RGR ~ Latitude)) #this will indicate if there are significant differences between groups
 d1 %>% kruskal_effsize(RGR ~ Latitude) #this indicates the amount of variance between groups explained by the treatment. 
 #The interpretation values commonly in published literature are: 0.01- < 0.06 (small effect), 0.06 - < 0.14 (moderate effect) and >= 0.14 (large effect).
 #value of .412 is very large it suggests that latitudinal sites vary by RGR 
@@ -421,10 +410,8 @@ defg
 defg
 defg
 '
-
-tiff("reflectance data by latitude -- 04-22-2023.tiff", units="in", width=20, height=10, res=300)
-wrap_plots(a=NDVI,b=PRI,c=ExGm, d=GRVI, e=ARI, f=RGR, g=legend, design=layout) + plot_annotation(tag_levels = "A")
-dev.off()
-
-#insert ggplot code
+# 
+# tiff("reflectance data by latitude.tiff", units="in", width=20, height=10, res=300)
+# wrap_plots(a=NDVI,b=PRI,c=ARI, d=ExGm, e=GRVI, f=RGR, g=legend, design=layout) + plot_annotation(tag_levels = "A")
+# dev.off()
 

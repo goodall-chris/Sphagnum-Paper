@@ -9,7 +9,6 @@ library(progress)
 library(dplyr)
 library(caret)
 library(mda)
-library(klaR)
 library(sda)
 library(reshape)
 library(viridis)
@@ -19,7 +18,7 @@ library(ggpubr)
 library(readr)
 
 #data 
-d1 <- read_csv("data/moss chl flu index by lat 04-14-2023.csv")
+d1 <- read_csv("data/chlorophyll fluorescence by latitude.csv")
 
 #pull columns to work with, round latitude, make latitude and PPFD factors
 d1 <- d1[, c("lat", "PPFD", "FvFm_mean", "qL", "qN", "NPQ", "phiPSII", "phiNPQ", "phiNO_new")]
@@ -27,10 +26,6 @@ names(d1)[names(d1) == 'lat'] <- 'Latitude'
 d1$Latitude <- round(d1$Latitude, 0) #round by lat
 d1$PPFD <- round_any(d1$PPFD, 50) #round by PPFD
 d1$Latitude=as.factor(d1$Latitude)
-# d2 <- d1[d1$PPFD==725,]
-# d2 <- d2[,c(1,3:9)]
-#d1$PPFD=as.factor(d1$PPFD)
-
 
 #setup inputs for training function
 trains <- c(0.4, 0.45, 0.5, 0.55, 0.6,
@@ -51,9 +46,9 @@ for(i in 1:100){
   pb$tick()
   for(j in 1:length(trains)){
     data_train <- d1$Latitude %>%
-      createDataPartition(p = trains[j], list = FALSE)#65%
-    train.data <- d1 [data_train, ]
-    test.data <- d1 [-data_train, ]
+      createDataPartition(p = trains[j], list = FALSE) #65%
+    train.data <- d1 [data_train, c(1, 3:9)] #omit PPFD
+    test.data <- d1 [-data_train, c(1, 3:9)] #omit PPFD
     preproc.param <- train.data %>%
       preProcess(method = c("center", "scale"))
     # Transform the data using the estimated parameters
@@ -77,12 +72,14 @@ ival_1 <- do.call("rbind", ival_1)
 success <- data.frame(pred_success_1, pred_cond_1, ival_1)
 summary(success)
 
+train.data
+
 #create data partitions for modeling 
 set.seed(26)
 data_train <- d1$Latitude %>%
   createDataPartition(p = 0.6, list = FALSE) #60/40 split
-train.data <- d1 [data_train, ]
-test.data <- d1 [-data_train, ]
+train.data <- d1 [data_train, c(1, 3:9)] #omit PPFD
+test.data <- d1 [-data_train, c(1, 3:9)] #omit PPFD
 preproc.param <- train.data %>% 
   preProcess(method = c("center", "scale")) #calculates predictors
 
@@ -138,6 +135,6 @@ figa <- ggplot(plot.data_1, aes(V1, V2)) +
 )
 figa
 
-tiff("FDA chl.flu -- latitude 04-23-2023.tiff", units="in", width=10, height=9, res=300)
-figa
-dev.off()
+# tiff("FDA chl.flu -- latitude.tiff", units="in", width=10, height=9, res=150)
+# figa
+# dev.off()

@@ -11,7 +11,7 @@ library(MASS)
 library(reshape)
 
 #import data
-d1 <- read_csv("data/moss chl flu index by lat 04-14-2023.csv")
+d1 <- read_csv("data/chlorophyll fluorescence by latitude.csv")
 
 #clean data
 # colnames(d1)

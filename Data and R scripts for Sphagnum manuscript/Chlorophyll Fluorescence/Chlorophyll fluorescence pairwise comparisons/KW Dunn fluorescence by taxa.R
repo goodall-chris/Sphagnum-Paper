@@ -11,7 +11,6 @@ library(multcomp) #for analysis
 library(viridis) #for plotting
 library(ggplot2)
 library(dplyr)
-library(agricolae)
 library(stringr)
 library(rstatix)
 library(ggpubr)
@@ -21,7 +20,7 @@ library(reshape)
 library(readr)
 
 #import data
-d1 <- read_csv("data/chl.flu index -- species 04-14-2023.csv")
+d1 <- read_csv("data/chlorophyll fluorescence by taxa 08-31-2023.csv")
 
 
 #clean data
@@ -622,8 +621,8 @@ layout <- '
 ABCD
 EFGX'
 
-tiff("Fluorescence by taxa.tiff", units="in", width=20, height=10, res=300)
-wrap_plots(A = FvFm_mean, B = qP, C = qL, D= NPQ, E = phiPSII, F = phiNPQ,
-           G = phiNO, X = legend, design=layout) + plot_annotation(tag_levels = 'A')
-dev.off()
+# tiff("Fluorescence by taxa.tiff", units="in", width=20, height=10, res=300)
+# wrap_plots(A = FvFm_mean, B = qP, C = qL, D= NPQ, E = phiPSII, F = phiNPQ,
+#            G = phiNO, X = legend, design=layout) + plot_annotation(tag_levels = 'A')
+# dev.off()
 

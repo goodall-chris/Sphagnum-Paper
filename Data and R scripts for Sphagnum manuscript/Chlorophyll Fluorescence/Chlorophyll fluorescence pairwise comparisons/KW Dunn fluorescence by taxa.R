@@ -20,7 +20,7 @@ library(reshape)
 library(readr)
 
 #import data
-d1 <- read_csv("data/chlorophyll fluorescence by taxa 08-31-2023.csv")
+d1 <- read_csv("data/chlorophyll fluorescence by taxa.csv")
 
 
 #clean data

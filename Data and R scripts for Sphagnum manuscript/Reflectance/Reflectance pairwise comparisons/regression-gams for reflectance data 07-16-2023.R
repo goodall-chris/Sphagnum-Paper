@@ -8,18 +8,10 @@ library(mgcv)
 library(MASS)
 
 #import data
-d1 <- read.csv("data/reflectance by latitude 04-22-2023.csv")
+d1 <- read.csv("data/reflectance by latitude.csv")
 
 #clean data
-d1$lat <- round(d1$lat, 50) #round by lat
-d1 <- d1[which(colnames((d1)) %in% c("lat", "NDVI", "PRI", "ARI", "ExGm", "GRVI", "RGR"))] #subset out columns of interest
-
-#Clean up data
-d1 <- d1[abs(d1$PRI) <= 1 &
-           d1$ARI > -20 &
-           d1$RGR > 0, ]
-
-colnames(d1)[1] <- "Latitude" #longer name
+#d1$Latitude <- round(d1$Latitude, 0) #round by latitutde
 
 #function to extract linear regression output values
 lmp <- function (modelobject) {
@@ -77,12 +69,27 @@ gam.check(NDVI_gam, rep=500) #passes
 #plot(NDVI_gam, residuals=TRUE,pch=19,cex=.3)
 (a<- lmp.2(NDVI_gam))
 
+
+#and altitude
+# NDVI_gam <- gam(NDVI ~ te(Altitude, Latitude), method = "REML", select = T, data=d1) #need to determine if tensor product makes sense.
+# summary(NDVI_gam)
+# gam.check(NDVI_gam, rep=500) #passes
+# #plot(NDVI_gam, residuals=TRUE,pch=19,cex=.3)
+##
+
+
 #PRI
 PRI_gam <- gam(PRI ~ s(Latitude, k=9), select = T, method = "REML", data=d1) 
 summary(PRI_gam)
 gam.check(PRI_gam, rep=500) #passes, there is a gap in the residuals vs. predictor plot though.
 #plot(PRI_gam, residuals=TRUE,pch=19,cex=.3)
 b <- lmp.2(PRI_gam)
+
+#and altitude
+# PRI_gam2 <- gam(PRI ~ te(Altitude, Latitude), select = T, method = "REML", data=d1)
+# summary(PRI_gam2)
+# gam.check(PRI_gam2, rep=500) #passes, there is a gap in the residuals vs. predictor plot though.
+#plot(PRI_gam, residuals=TRUE,pch=19,cex=.3)
 
 #ARI
 ARI_gam <- gam(ARI ~ s(Latitude, k=9), method = "REML", data=d1) 
@@ -91,12 +98,24 @@ gam.check(ARI_gam, rep=500) #passes.
 #plot(ARI_gam, residuals=TRUE,pch=19,cex=.3)
 c <- lmp.2(ARI_gam) 
 
+#and altitude
+# ARI_gam2 <- gam(ARI ~ te(Altitude, Latitude), method = "REML", data=d1)
+# summary(ARI_gam2)
+# gam.check(ARI_gam2, rep=500) #passes.
+# #plot(ARI_gam, residuals=TRUE,pch=19,cex=.3)
+
 #ExGm
 ExGm_gam <- gam(ExGm ~ s(Latitude, k=9), select=T, method = "REML", data=d1)
 summary(ExGm_gam)
 gam.check(ExGm_gam, rep=500) #passes
 #plot(ExGm_gam, residuals=TRUE,pch=19,cex=.3)
 d <- lmp.2(ExGm_gam)
+
+#and altitude
+ExGm_gam2 <- gam(ExGm ~te(Altitude, Latitude), select=T, method = "REML", data=d1)
+summary(ExGm_gam2)
+gam.check(ExGm_gam, rep=500) #passes
+#plot(ExGm_gam, residuals=TRUE,pch=19,cex=.3)
 
 #GRVI
 GRVI_gam <- gam(GRVI ~ s(Latitude, k=9), select=T, method = "REML", data=d1)
@@ -105,12 +124,26 @@ gam.check(GRVI_gam, rep=500) #passes
 #plot(GRVI_gam, residuals=TRUE,pch=19,cex=.3)
 e <- lmp.2(GRVI_gam)
 
+#add altitude
+# GRVI_gam2 <- gam(GRVI ~ te(Altitude, Latitude), select=T, method = "REML", data=d1)
+# summary(GRVI_gam2)
+# gam.check(GRVI_gam2, rep=500) #passes
+# #plot(GRVI_gam, residuals=TRUE,pch=19,cex=.3)
+# e <- lmp.2(GRVI_gam)
+
 #RGR
 RGR_gam <- gam(RGR ~ s(Latitude, k=9), select=T, method = "REML", data=d1)
 summary(RGR_gam)
 gam.check(RGR_gam, rep=500) #passes
 #plot(RGR_gam, residuals=TRUE,pch=19,cex=.3)
 f <- lmp.2(RGR_gam)
+
+#and altitude
+# RGR_gam2 <- gam(RGR ~ te(Altitude, Latitude), select=T, method = "REML", data=d1)
+# summary(RGR_gam2)
+# gam.check(RGR_gam2, rep=500) #passes
+# #plot(RGR_gam, residuals=TRUE,pch=19,cex=.3)
+# f <- lmp.2(RGR_gam)
 
 #compile gam data
 (gam <- rbind(a,b,c,d,e,f))

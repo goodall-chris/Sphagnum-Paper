@@ -20,7 +20,7 @@ library(mosaic)
 library(readr)
 
 #import data
-d1 <- read.csv("data/reflectance by taxa 04-22-2023.csv")
+d1 <- read.csv("data/reflectance by taxa.csv")
 
 #Clean up data to exclude physiologically impossible values
 d1 <- d1[abs(d1$PRI) <= 1 &

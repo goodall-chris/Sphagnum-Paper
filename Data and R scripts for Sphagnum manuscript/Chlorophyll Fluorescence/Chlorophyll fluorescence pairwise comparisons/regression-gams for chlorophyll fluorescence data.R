@@ -12,8 +12,9 @@ library(reshape)
 
 #import data
 d1 <- read_csv("data/moss chl flu index by lat 04-14-2023.csv")
-colnames(d1)
+
 #clean data
+# colnames(d1)
 d1$lat <- round(d1$lat, 0) #round by lat
 colnames(d1)[2] <- "Latitude" #change name 
 d1$PPFD <- round_any(d1$PPFD, 50) #round to nearest increment of 50 for PPFD
@@ -36,6 +37,7 @@ lmp <- function (modelobject) {
   out <- cbind(s, r, f, p)
   return(out)
 }
+
 
 #linear models
 FvFm_mean_lm <- lm(FvFm_mean ~ Latitude, data=d1)

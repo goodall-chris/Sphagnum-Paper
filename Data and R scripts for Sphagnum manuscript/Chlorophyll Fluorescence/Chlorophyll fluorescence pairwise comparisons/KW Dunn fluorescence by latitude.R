@@ -20,7 +20,7 @@ library(reshape)
 library(readr)
 
 #import data
-d1 <- read_csv("data/chlorophyll fluorescence by latitude 08-31-2023.csv")
+d1 <- read_csv("data/chlorophyll fluorescence by latitude.csv")
 
 #clean data
 d1$Latitude <- round(d1$Latitude, 0) #round by latitude

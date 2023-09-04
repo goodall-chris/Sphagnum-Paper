@@ -29,7 +29,7 @@ lmp <- function (modelobject) {
   if (class(modelobject) != "lm") stop("Not an object of class 'lm' ")
   s <- summary(modelobject)$coefficients[2,1] #slope
   f <- summary(modelobject)$fstatistic #f
-  r <- summary(modelobject)$adj.r.squared #r^2 
+  r <- summary(modelobject)$r.squared #r^2 
   p <- pf(f[1],f[2],f[3],lower.tail=F) #p 
   attributes(p) <- NULL
   attributes(f) <- NULL
@@ -133,7 +133,7 @@ ID <- c("FvFm","qP","qL","NPQ","phiPSII","phiNPQ","phiNO")
 tab <- cbind(ID, lm, gam)
 
 #rename columns 
-colnames(tab) <- c("ID","slope","adj.r.squared","f","p","explained deviance","r.squared","EDF","AIC","p.gam")
+colnames(tab) <- c("ID","slope","r.squared","f","p","explained deviance","r.squared","EDF","AIC","p.gam")
 tab
 
 #write output

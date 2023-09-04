@@ -17,7 +17,7 @@ d1 <- read.csv("data/reflectance by latitude.csv")
 lmp <- function (modelobject) {
   if (class(modelobject) != "lm") stop("Not an object of class 'lm' ")
   slope <- summary(modelobject)$coefficients[2,1] #slope
-  r_squared <- summary(modelobject)$adj.r.squared #r^2 
+  r_squared <- summary(modelobject)$r.squared #r^2 
   f <- summary(modelobject)$fstatistic
   p <- pf(f[1],f[2],f[3],lower.tail=F) #p 
   attributes(p) <- NULL
@@ -112,7 +112,7 @@ ID <- c("NDVI", "PRI", "ARI", "ExGm", "GRVI", "RGR")
 tab <- cbind(ID, lm, gam)
 
 #rename columns 
-colnames(tab) <- c("ID","slope","f","r.squared","p","explained deviance","r.squared","EDF","AIC","p")
+colnames(tab) <- c("ID","slope","r.squared","f","p","explained deviance","r.squared","EDF","AIC","p")
 tab
 
 #write output
